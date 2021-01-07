@@ -1,12 +1,15 @@
 import AuthLayOut from "../../components/LayOut/AuthLayout"
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {useState} from "react"
+import {useContext, useState} from "react"
 import { Form, Button } from "react-bootstrap"
 import { Link } from "react-router-dom"
 import Navbars from "../../components/Navbar/Navbar"
+import api from "../../api/api"
+import {AuthContext} from "../../App"
 
 function Login() {
-    const [form, setForm] = useState({email: "", password :""})
+    const {login, user} = useContext(AuthContext)
+    const [form, setForm] = useState({email:"", password :""})
     
     const onChangeForm = (event) => {
         const { name, value} = event.target 
@@ -15,16 +18,24 @@ function Login() {
             [name] :value,
         })
     }
-    const onSubmitForm = () => {
-        
-
+    const onSubmitForm = async(event) => {
+        event.preventDefault()
+        const res = await api({
+            url : "/employee/signin",
+            method : "POST",
+            data : form
+        })
+        console.log(res)
+        if (res.success) {
+            login(res.data)
+        }
     }
 
     return (
         <AuthLayOut>
             <Navbars className="mb-4"></Navbars>
             <div className="container" >
-                <Form className="Login">
+                <Form className="Login" onSubmit={onSubmitForm}>
                     <Form.Text className="heading">
                         Login and find your Job
                 </Form.Text>

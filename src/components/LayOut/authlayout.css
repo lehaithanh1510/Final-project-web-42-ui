@@ -6,7 +6,7 @@
     flex-direction: column;
 
 }
-.Login {
+.Login, .Register {
     width : 40%;
     display : flex;
     flex-direction: column;
@@ -26,6 +26,7 @@
     font-size: 29px;
     text-align: center;
     padding-top : 110px;
+    padding-bottom: 30px;
 }
 .button-wrapper {
     display: flex;
