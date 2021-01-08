@@ -5,6 +5,7 @@ import Home from "./pages/Home/Home"
 import Login from "./pages/Auth/Login"
 import Register from "./pages/Auth/Register"
 import { useState, createContext } from "react"
+import DetailCompany from './pages/User/DetailCompany';
 export const AuthContext = createContext()
 
 function App() {
@@ -29,6 +30,9 @@ function App() {
           </Route>
           <Route path="/register" exact>
             <Register></Register>
+          </Route>
+          <Route path="/company/" exact>
+            <DetailCompany></DetailCompany>
           </Route>
         </Switch>
       </div>

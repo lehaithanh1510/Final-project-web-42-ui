@@ -1,0 +1,14 @@
+
+.detail-body {
+    display: flex;
+    justify-content: space-between;
+}
+.job-cotainer {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+}
+.review-container {
+    width : 38%;
+}
+

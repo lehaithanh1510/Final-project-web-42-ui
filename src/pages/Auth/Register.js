@@ -2,7 +2,7 @@ import AuthLayOut from "../../components/LayOut/AuthLayout"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {useState, useContext} from "react"
 import { Form, Button } from "react-bootstrap"
-import { Link } from "react-router-dom"
+import { Link, Redirect } from "react-router-dom"
 import Navbars from "../../components/Navbar/Navbar"
 import api from "../../api/api"
 import {AuthContext} from "../../App"
@@ -10,6 +10,11 @@ import {AuthContext} from "../../App"
 function Register() {
     const [form, setForm] = useState({email:"", password :""})
     const {login, user} = useContext(AuthContext)
+
+    if(user) return (
+        <Redirect to="/"></Redirect>
+    )
+
     const onChangeForm = (event) => {
         const { name, value} = event.target 
         setForm ({

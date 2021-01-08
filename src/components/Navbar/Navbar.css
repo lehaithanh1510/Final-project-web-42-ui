@@ -1,0 +1,11 @@
+.white {
+    color: #ffffff !important ;
+}
+.user{
+    position: absolute;
+    right: 2%;
+}
+.mr-auto {
+    position: relative;
+    width: 100%;
+}
