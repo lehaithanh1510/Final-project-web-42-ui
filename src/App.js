@@ -6,6 +6,8 @@ import Login from "./pages/Auth/Login"
 import Register from "./pages/Auth/Register"
 import { useState, createContext } from "react"
 import DetailCompany from './pages/User/DetailCompany';
+import DetailEmployee from './pages/User/DetailEmployee';
+import DetailJob from './pages/Job/DetailJob';
 export const AuthContext = createContext()
 
 function App() {
@@ -33,6 +35,12 @@ function App() {
           </Route>
           <Route path="/company/" exact>
             <DetailCompany></DetailCompany>
+          </Route>
+          <Route path="/employee/" exact>
+            <DetailEmployee></DetailEmployee>
+          </Route>
+          <Route path="/job/" exact>
+            <DetailJob></DetailJob>
           </Route>
         </Switch>
       </div>

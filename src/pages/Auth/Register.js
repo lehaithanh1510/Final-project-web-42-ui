@@ -3,7 +3,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {useState, useContext} from "react"
 import { Form, Button } from "react-bootstrap"
 import { Link, Redirect } from "react-router-dom"
-import Navbars from "../../components/Navbar/Navbar"
 import api from "../../api/api"
 import {AuthContext} from "../../App"
 
@@ -38,8 +37,7 @@ function Register() {
 
     return (
         <AuthLayOut>
-            <Navbars></Navbars>
-            <div className="container" >
+            <div className="container"  style={{"flex-direction" : "row" }} >
                 <Form className="Register" onSubmit={onSubmitForm}>
                     <Form.Text className="heading">
                         Register and find your Job
