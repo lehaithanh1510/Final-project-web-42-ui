@@ -21,14 +21,31 @@ function Register() {
             [name] :value,
         })
     }
+    const onChangeCheckbox = (event) => {
+        const label = event.target.nextSibling.textContent
+        setForm({
+            ...form,
+            checked: label,
+        })
+    }
     const onSubmitForm = async(event) => {
         event.preventDefault()
         console.log(form)
-        const res = await api({
-            url : "/employee/signup",
-            method : "POST",
-            data : form
-        })
+        let res 
+        if (form.checked == "Employee") {
+             res = await api({
+                url : "/employee/signup",
+                method : "POST",
+                data : form
+            })
+        }
+        else {
+             res = await api({
+                url : "/employer/signup",
+                method : "POST",
+                data : form
+            })
+        }
         console.log(res)
         if (res.success) {
             login(res.data)
@@ -57,6 +74,14 @@ function Register() {
                         <Form.Control type="password" placeholder="Confirm password" name="confirmPassword" 
                         value= {form.confirmPassword} onChange={onChangeForm}/>
                     </Form.Group>
+                    <div className ="role-checkbox" style ={{display:"flex", "justify-content": "space-between"}}>
+                        <Form.Group controlId="formBasicCheckbox" onChange= {onChangeCheckbox}>
+                            <Form.Check type="radio" label="Employee" name ="role" />
+                        </Form.Group>
+                        <Form.Group controlId="formBasicCheckbox" onChange= {onChangeCheckbox}>
+                            <Form.Check type="radio" label="Employeer" name ="role" />
+                        </Form.Group>
+                    </div>
                     <div className="button-wrapper">
                         <Button className="button" variant="primary" type="submit" block>
                             Submit
