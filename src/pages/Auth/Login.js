@@ -8,6 +8,7 @@ import { AuthContext } from "../../App"
 
 function Login() {
     const { login, user } = useContext(AuthContext)
+    console.log(user)
     const [form, setForm] = useState({ email: "", password: "", checked: ""})
 
     if (user) return (
@@ -45,11 +46,13 @@ function Login() {
                 </Form.Text>
                     <Form.Group controlId="formBasicEmail">
                         <Form.Label>Email address</Form.Label>
-                        <Form.Control type="email" placeholder="Enter your email" name="email" value={form.email} onChange={onChangeForm} />
+                        <Form.Control type="email" placeholder="Enter your email" name="email" 
+                        value={form.email} onChange={onChangeForm} />
                     </Form.Group>
                     <Form.Group controlId="formBasicPassword">
                         <Form.Label>Password</Form.Label>
-                        <Form.Control type="password" placeholder="Password" name="password" value={form.password} onChange={onChangeForm} />
+                        <Form.Control type="password" placeholder="Password" name="password" 
+                        value={form.password} onChange={onChangeForm} />
                     </Form.Group>
                     <div className="button-wrapper">
                         <Button className="button" variant="primary" type="submit" block>
