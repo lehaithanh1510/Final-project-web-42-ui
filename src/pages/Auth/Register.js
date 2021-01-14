@@ -31,7 +31,7 @@ function Register() {
     const onSubmitForm = async(event) => {
         event.preventDefault()
         console.log(form)
-        let res 
+        let res
         if (form.checked == "Employee") {
              res = await api({
                 url : "/employee/signup",

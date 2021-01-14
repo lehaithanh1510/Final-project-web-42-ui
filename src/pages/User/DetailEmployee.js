@@ -13,6 +13,8 @@ import api from "../../api/api"
 import storage from "../../firebase/index"
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import SaveIcon from '@material-ui/icons/Save';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -47,6 +49,17 @@ export default function DetailEmployee() {
     const [cv, setCV] = useState(null);
     const [avatar, setAvatar] = useState(null);
     const [src, setSrc] = useState(user.image || '/broken-image.jpg')
+    const [userName, setuserName] = useState(user.name || "Your Name")
+    const [alert, setAlert] = useState(null)
+    const notify = () => toast.success('🦄 Update Completed', {
+        position: "top-center",
+        autoClose: false,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });  ;
     const onChangesaveCV = (event) => {
         const files = event.target.files[0]
         console.log(files)
@@ -117,8 +130,8 @@ export default function DetailEmployee() {
             url: "/resume/owner",
             method: "GET",
         })
-        console.log("CV lay ve",res)
-        const cvName  = res.data[res.data.length-1];
+        console.log("CV lay ve", res)
+        const cvName = res.data[res.data.length - 1];
         console.log(cvName)
         setCV(cvName)
     }
@@ -131,6 +144,7 @@ export default function DetailEmployee() {
     }, [])
     const onChangeForm = (event) => {
         const { name, value } = event.target
+        console.log(event.target.value)
         setForm({
             ...form,
             [name]: value,
@@ -183,12 +197,25 @@ export default function DetailEmployee() {
             if (avaRes.success) {
                 console.log(avaRes)
                 setSrc(user.image)
+                notify()
+                setAlert(true);
             }
         }
-        debugger;
+        else if (form) {
+            const res = await api({
+                url: "/employee",
+                method: "PATCH",
+                data: { ...form }
+            })
+            if (res.success) {
+                setuserName(form.name || user.name)
+                notify()
+                setAlert(true);
+            }
+        }
         if (saveCV) {
             var cvUrl = await uploadFile(saveCV, "cv")
-            console.log("cvUrl",cvUrl)
+            console.log("cvUrl", cvUrl)
             const cvRes = await api({
                 url: "/resume",
                 method: "POST",
@@ -198,15 +225,16 @@ export default function DetailEmployee() {
             if (cvRes.success) {
                 setCV(cvRes.data)
                 setSaveCV(null)
-
+                notify()
+                setAlert(true);
             }
         }
     }
 
     return (
-        <MainLayOut>
-            <div style={{ "background-color": "#ffffff", width: "60%" }}>
 
+        <MainLayOut>
+            <div style={{ "background-color": "#ffffff", width: "auto" }}>
                 <Container component="main" maxWidth="xs" style={{ "background-color": "#ffffff" }}>
                     <CssBaseline />
 
@@ -223,10 +251,6 @@ export default function DetailEmployee() {
                             document.getElementById('outlined-size-small').click();
                         }} />
 
-                        {/* <form className="choose-file mt-2" style={{ display: "flex" }}>
-
-                        </form> */}
-
                         <form className={classes.form} noValidate onSubmit={onSubmitForm}>
                             <TextField
                                 style={{ display: 'none' }}
@@ -238,20 +262,20 @@ export default function DetailEmployee() {
 
                             <Grid container spacing={2}>
                                 <Grid item xs={12} sm={12}>
-                                    <TextField autoComplete="fname" name="firstName" variant="outlined" required fullWidth
-                                        id="firstName" label="Your Name" autoFocus size="small" onChange={{ onChangeForm }} />
+                                    <TextField autoComplete="fname" name="name" variant="outlined" required fullWidth
+                                        id="firstName" label={userName} size="small" type="text" onChange={onChangeForm} />
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <Typography component="h5" variant="h5" style={{ "font-size": "20px" }} onChange={{ onChangeForm }}>
+                                    <Typography component="h5" variant="h5" style={{ "font-size": "20px" }}>
                                         Email Address
                                     </Typography>
-                                    <Typography component="h5" variant="h5" style={{ "font-size": "20px" }} onChange={{ onChangeForm }}>
+                                    <Typography component="h5" variant="h5" style={{ "font-size": "20px" }}>
                                         {user.email}
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={12}>
                                     {renderCV()}
-                                   
+
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Typography component="h5" variant="h5" style={{ "font-size": "20px" }}>

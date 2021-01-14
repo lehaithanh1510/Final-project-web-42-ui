@@ -9,12 +9,18 @@ import { AuthContext } from "../../App"
 function Login() {
     const { login, user } = useContext(AuthContext)
     console.log(user)
-    const [form, setForm] = useState({ email: "", password: "", checked: ""})
+    const [form, setForm] = useState({ email: "", password: "", checked: "" })
 
     if (user) return (
         <Redirect to="/"></Redirect>
     )
-
+    const onChangeCheckbox = (event) => {
+        const label = event.target.nextSibling.textContent
+        setForm({
+            ...form,
+            checked: label,
+        })
+    }
     const onChangeForm = (event) => {
         const { name, value } = event.target
         setForm({
@@ -22,16 +28,25 @@ function Login() {
             [name]: value,
         })
     }
-    
+
     const onSubmitForm = async (event) => {
         event.preventDefault()
         console.log(form)
-        const res = await api({
-            url: "/employee/signin",
-            method: "POST",
-            data: form
-        })
-        console.log(res)
+        let res
+        if (form.checked == "Employee") {
+            res = await api({
+                url: "/employee/signin",
+                method: "POST",
+                data: form
+            })
+        }
+        else {
+            res = await api({
+                url: "/employer/signin",
+                method: "POST",
+                data: form
+            })
+        }
         if (res.success) {
             login(res.data)
         }
@@ -46,19 +61,28 @@ function Login() {
                 </Form.Text>
                     <Form.Group controlId="formBasicEmail">
                         <Form.Label>Email address</Form.Label>
-                        <Form.Control type="email" placeholder="Enter your email" name="email" 
-                        value={form.email} onChange={onChangeForm} />
+                        <Form.Control type="email" placeholder="Enter your email" name="email"
+                            value={form.email} onChange={onChangeForm} />
                     </Form.Group>
                     <Form.Group controlId="formBasicPassword">
                         <Form.Label>Password</Form.Label>
-                        <Form.Control type="password" placeholder="Password" name="password" 
-                        value={form.password} onChange={onChangeForm} />
+                        <Form.Control type="password" placeholder="Password" name="password"
+                            value={form.password} onChange={onChangeForm} />
                     </Form.Group>
+                    <div className="role-checkbox" style={{ display: "flex", "justify-content": "space-between" }}>
+                        <Form.Group controlId="formBasicCheckbox" onChange={onChangeCheckbox}>
+                            <Form.Check type="radio" label="Employee" name="role" />
+                        </Form.Group>
+                        <Form.Group controlId="formBasicCheckbox" onChange={onChangeCheckbox}>
+                            <Form.Check type="radio" label="Employeer" name="role" />
+                        </Form.Group>
+                    </div>
                     <div className="button-wrapper">
                         <Button className="button" variant="primary" type="submit" block>
                             Submit
                         </Button>
                     </div>
+
                     <div className="redirect-box mt-4">
                         Don't have account ? <Link to="/register"> Register </Link>
                     </div>

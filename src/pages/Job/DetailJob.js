@@ -1,8 +1,23 @@
 import MainLayOut from "../../components/LayOut/MainLayout"
+import api from "../../api/api"
 import { Card, Button } from "react-bootstrap"
+import {useContext} from "react"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./detailjob.css"
+import { AuthContext } from "../../App";
+
 function DetailJob() {
+    const {user} = useContext(AuthContext);
+    const onClickApplyNow = () => {
+        console.log(user)
+        
+        const res = api({
+            url: "/application/",
+            method: "POST",
+            data: user
+        })
+    }
+
     return (
         <MainLayOut>
             <div className="job-card">
@@ -10,7 +25,7 @@ function DetailJob() {
                     <Card.Img className="company-img mr-3" variant="top" src="https://cdn.itviec.com/employers/bbv-vietnam/logo/w170/32Bifg8XYcgWL8CBMKTwu5Pa/bbv3.png" />
                     <div className="job-detail-header-content">
                         <Card.Title style={{ "font-size": "2rem" }} className="mb-4">Lead/ Senior Security Engineer, Pen Test</Card.Title>
-                        <Button variant="danger" size="lg" block>
+                        <Button variant="danger" size="lg" block onClick={onClickApplyNow}>
                             Apply Now
                     </Button>
                     </div>
